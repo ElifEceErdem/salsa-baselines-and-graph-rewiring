@@ -1,0 +1,27 @@
+# File paths (set these before running)
+train_graph_path: "/Users/eceerdem/Desktop/gae_synthetic_network_generation/gae_synthetic_graph_generator/ws_saved_graphs/ws1/train_graph.pkl"
+train_undi_graph_path: "/Users/eceerdem/Desktop/gae_synthetic_network_generation/gae_synthetic_graph_generator/ws_saved_graphs/ws1/train_undi_graph.np_csr.pkl"
+test_edges_path: "/Users/eceerdem/Desktop/gae_synthetic_network_generation/gae_synthetic_graph_generator/ws_saved_graphs/ws1/eval-recall/recall_test_pos_edgelist.pkl"
+
+# Dataset name (choose from: twitter, wiki, reed98, ...)
+data: "pokec"
+
+# Model type (choose from: salsaAuth, common_neighbors, random)
+model: "salsaAuth"
+
+# Link prediction and evaluation
+k: 10                     # Number of top predictions for evaluation
+num_epochs: 100           # (unused for salsa, but keep for compatibility)
+
+# SALSA / PPR config
+k_circle_of_trust: 50    # Number of people in circle of trust (PPR top-k)
+damping_factor: 0.99     # Personalization damping factor (1 - restart prob)
+tol: 1e-8                # Convergence tolerance
+num_walks: 1000          # Number of random walks per node for PPR
+walk_length: 30          # Length of each random walk
+
+# Seed for reproducibility
+seed: 7
+
+# Output paths
+output_path: "/Users/eceerdem/Desktop/gae_synthetic_network_generation/salsa/outputs"  

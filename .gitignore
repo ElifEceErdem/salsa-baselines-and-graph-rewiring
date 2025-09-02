@@ -1,0 +1,9 @@
+# data
+salsa/datasets/all_datasets/**
+salsa/outputs/**
+!salsa/datasets/README.md
+!salsa/datasets/samples/**
+
+# experimental scripts
+/gnn_based_improved.py
+/real_dataset_improved.py
