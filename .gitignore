@@ -6,4 +6,7 @@ salsa/outputs/**
 
 # experimental scripts
 /gnn_based_improved.py
-/real_dataset_improved.py
+/real_dataset_info.py
+
+# environment
+/environment.yml.bak
