@@ -1,33 +1,12 @@
 import networkx as nx
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.gridspec as gridspec
 import seaborn as sns
 import os
+import argparse
 
-# --- Configuration ---
-# TODO: Please verify this path to the original graph is correct.
-REED98_GRAPH_FILE = "/Users/eceerdem/Desktop/gae_synthetic_network_generation/aaai_results_doc/realistic_synthetic_exp/tailsteak_fairness_examination/socfb-Reed98.edgelist"
-
-DATASET_CONFIG = [
-    {
-        "name": "PPRGo (Reed98)",
-        "original_graph_file": REED98_GRAPH_FILE,
-        "predicted_edges_file": "/Users/eceerdem/Desktop/gae_synthetic_network_generation/aaai_results_doc/realistic_synthetic_exp/tailsteak_fairness_examination/pprgo_predicted_network_top10.npy"
-    },
-    {
-        "name": "Tailsteak (Reed98)",
-        "original_graph_file": REED98_GRAPH_FILE,
-        "predicted_edges_file": "/Users/eceerdem/Desktop/gae_synthetic_network_generation/aaai_results_doc/realistic_synthetic_exp/tailsteak_fairness_examination/tailsteak_top_10_predicted_edges_seed_7.txt"
-    }
-]
-
-NUM_BINS = 12
-# Saving output to a local 'output' directory for convenience
-OUTPUT_DIR = "/Users/eceerdem/Desktop/gae_synthetic_network_generation/aaai_results_doc/realistic_synthetic_exp/tailsteak_fairness_examination/"
-OUTPUT_FILENAME = "degree_mixing_comparison_pprgo_vs_tailsteak.png"
-# ---------------------
-
-def prepare_data_for_dataset(config):
+def prepare_data_for_dataset(config, num_bins):
     """
     Loads and processes data for a single dataset.
     This function now handles both .txt and .npy prediction files.
@@ -46,13 +25,9 @@ def prepare_data_for_dataset(config):
         prediction_file = config["predicted_edges_file"]
         if prediction_file.endswith('.npy'):
             print(f"Reading NumPy file: {os.path.basename(prediction_file)}")
-            # predicted_edges = np.load(prediction_file)
             predicted_edges = np.load(prediction_file)[:, :2]
         elif prediction_file.endswith('.txt'):
             print(f"Reading text file: {os.path.basename(prediction_file)}")
-            # Assuming format: node1,node2 (or node1 node2) per line
-            # The split() method handles any whitespace delimiter, which is robust.
-            # If your file is strictly comma-separated, you can use split(',')
             predicted_edges = [tuple(map(int, line.strip().split(','))) for line in open(prediction_file)]
         else:
             raise ValueError(f"Unsupported file format for predictions: {prediction_file}")
@@ -62,7 +37,8 @@ def prepare_data_for_dataset(config):
         return None
     
     max_degree = max(initial_degrees.values()) if initial_degrees else 1
-    bins = np.unique(np.logspace(0, np.log2(max_degree if max_degree > 0 else 1), num=NUM_BINS, base=2, dtype=int)).tolist()
+    # Use the num_bins argument passed into the function
+    bins = np.unique(np.logspace(0, np.log2(max_degree if max_degree > 0 else 1), num=num_bins, base=2, dtype=int)).tolist()
     if not bins: bins = [1]
     if bins[0] != 1: bins.insert(0, 1)
 
@@ -81,84 +57,65 @@ def prepare_data_for_dataset(config):
         
     return {"matrix": normalized_matrix, "labels": bin_labels, "name": dataset_name}
 
-
-
-from matplotlib.ticker import MaxNLocator # Import the locator
-import matplotlib.gridspec as gridspec
-
-def main_side_by_side():
-    # =========================================================================
-    # CRITICAL STEP 1: First, prepare data for ALL datasets to find the global scale.
-    # =========================================================================
-    plot_data_list = [prepare_data_for_dataset(config) for config in DATASET_CONFIG]
-    plot_data_list = [data for data in plot_data_list if data is not None]
-
-    if not plot_data_list:
-        print("No valid data could be processed. Exiting.")
-        return
-
-    # Find the single maximum value across all processed matrices.
-    global_vmax = max(data['matrix'].max() for data in plot_data_list if data['matrix'].size > 0)
-    print(f"\n✅ Global color scale determined. Max value (vmax) = {global_vmax:.3f}")
-
-    # =========================================================================
-    # CRITICAL STEP 2: Now, create the plot, forcing each heatmap to use the same scale.
-    # =========================================================================
-    print("Generating plot...")
-
-    # Make a figure with one extra column reserved for the shared colorbar
-    fig = plt.figure(figsize=(11 * len(plot_data_list), 8), constrained_layout=True)
-    gs = fig.add_gridspec(
-        1, len(plot_data_list) + 1,
-        width_ratios=[1] * len(plot_data_list) + [0.04]  # last column is the colorbar
-    )
-
-    axes = [fig.add_subplot(gs[0, i]) for i in range(len(plot_data_list))]
-    cax = fig.add_subplot(gs[0, -1])  # dedicated colorbar axis
-
-    mappable_for_cbar = None
-    for i, data in enumerate(plot_data_list):
-        ax = axes[i]
-        hm = sns.heatmap(
-            data['matrix'],
-            cmap='inferno',
-            linewidths=.5,
-            ax=ax,
-            xticklabels=data['labels'],
-            yticklabels=data['labels'],
-            cbar=False,           # IMPORTANT: no per-axis colorbar
-            vmin=0,
-            vmax=global_vmax
-        )
-        # remember a mappable for the shared colorbar
-        if mappable_for_cbar is None:
-            mappable_for_cbar = hm.collections[0]
-
-        ax.set_title(f"{data['name']}", fontsize=24, pad=10)
-        ax.set_xlabel('Target Node Degree Bin', fontsize=22)
-        ax.tick_params(axis='x', rotation=45, labelsize=18)
-        ax.tick_params(axis='y', rotation=0, labelsize=18)
-
-    # Y-label on the first heatmap only
-    axes[0].set_ylabel('Source Node Degree Bin', fontsize=22)
-
-    # Shared colorbar placed in its own axis -> no overlap
-    cbar = fig.colorbar(mappable_for_cbar, cax=cax, orientation='vertical')
-    cbar.set_label('Normalized Frequency', fontsize=22, labelpad=15)
-    cbar.ax.tick_params(labelsize=18)
-
-    # plt.show()
-
-    # (If you want to save)
-    os.makedirs(OUTPUT_DIR, exist_ok=True)
-    full_output_path = os.path.join(OUTPUT_DIR, OUTPUT_FILENAME)
-    plt.savefig(full_output_path, dpi=300)
-    plt.close(fig)
-
-
 def main():
-    # STEP 1: Prepare data and find global scale
-    plot_data_list = [prepare_data_for_dataset(config) for config in DATASET_CONFIG]
+    # =========================================================================
+    # STEP 1: Set up and parse command-line arguments
+    # =========================================================================
+    parser = argparse.ArgumentParser(
+        description="Generate a degree mixing comparison plot for graph prediction models.",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+    )
+    parser.add_argument(
+        "--original-graph",
+        required=True,
+        help="Path to the original graph edgelist file (e.g., socfb-Reed98.edgelist)."
+    )
+    parser.add_argument(
+        "--pprgo-predictions",
+        required=True,
+        help="Path to the PPRGo predicted edges file (.npy)."
+    )
+    parser.add_argument(
+        "--tailsteak-predictions",
+        required=True,
+        help="Path to the Tailsteak predicted edges file (.txt)."
+    )
+    parser.add_argument(
+        "--output-dir",
+        required=True,
+        help="Directory to save the output plot."
+    )
+    parser.add_argument(
+        "--output-filename",
+        default="degree_mixing_comparison.png",
+        help="Filename for the output plot."
+    )
+    parser.add_argument(
+        "--num-bins",
+        type=int,
+        default=12,
+        help="Number of logarithmic bins for degree distribution."
+    )
+    args = parser.parse_args()
+
+    # =========================================================================
+    # STEP 2: Dynamically create the configuration from arguments
+    # =========================================================================
+    DATASET_CONFIG = [
+        {
+            "name": "PPRGo (Reed98)",
+            "original_graph_file": args.original_graph,
+            "predicted_edges_file": args.pprgo_predictions
+        },
+        {
+            "name": "Tailsteak (Reed98)",
+            "original_graph_file": args.original_graph,
+            "predicted_edges_file": args.tailsteak_predictions
+        }
+    ]
+
+    # STEP 3: Prepare data and find global scale
+    plot_data_list = [prepare_data_for_dataset(config, args.num_bins) for config in DATASET_CONFIG]
     plot_data_list = [data for data in plot_data_list if data is not None]
 
     if not plot_data_list:
@@ -169,20 +126,16 @@ def main():
     print(f"\n✅ Global color scale determined. Max value (vmax) = {global_vmax:.3f}")
 
     # =========================================================================
-    # STEP 2: Create the plot with updated titles and shared axes
+    # STEP 4: Create the plot with updated titles and shared axes
     # =========================================================================
     print("Generating plot...")
-
-    # === KEY CHANGE 1: Use constrained_layout for better automatic spacing ===
-    fig = plt.figure(figsize=(8, 11), constrained_layout=True)
+    fig = plt.figure(figsize=(11, 12), constrained_layout=True)
     gs = gridspec.GridSpec(2, 2, figure=fig, width_ratios=[1, 0.05], wspace=0.1)
-
     axes = [fig.add_subplot(gs[i, 0]) for i in range(2)]
     cax = fig.add_subplot(gs[:, 1])
 
     mappable_for_cbar = None
     subplot_labels = ['(a)', '(b)']
-
     for i, data in enumerate(plot_data_list):
         ax = axes[i]
         hm = sns.heatmap(
@@ -190,8 +143,7 @@ def main():
             xticklabels=data['labels'], yticklabels=data['labels'],
             cbar=False, vmin=0, vmax=global_vmax
         )
-        if mappable_for_cbar is None:
-            mappable_for_cbar = hm.collections[0]
+        if mappable_for_cbar is None: mappable_for_cbar = hm.collections[0]
         
         ax.set_title(f"{subplot_labels[i]} {data['name']}", fontsize=22, pad=15)
         ax.set_ylabel('Source Node Degree Bin', fontsize=22)
@@ -209,15 +161,33 @@ def main():
     cbar.ax.tick_params(labelsize=18)
 
     # Save the figure
-    os.makedirs(OUTPUT_DIR, exist_ok=True)
-    
-    # === KEY CHANGE 2: Corrected the function name to os.path.join ===
-    full_output_path = os.path.join(OUTPUT_DIR, OUTPUT_FILENAME)
-    
+    os.makedirs(args.output_dir, exist_ok=True)
+    full_output_path = os.path.join(args.output_dir, args.output_filename)
     plt.savefig(full_output_path, dpi=300, bbox_inches='tight')
     plt.close(fig)
     print(f"\n✅ Plot successfully saved as '{full_output_path}'")
 
-
 if __name__ == '__main__':
     main()
+
+# USAGE EXAMPLE:
+
+'''
+python tailsteak_fairness_tail_examination.py \
+  --original-graph "/path/to/your/socfb-Reed98.edgelist" \
+  --pprgo-predictions "/path/to/your/pprgo_predicted_network_top10.npy" \
+  --tailsteak-predictions "/path/to/your/tailsteak_top_10_predicted_edges_seed_7.txt" \
+  --output-dir "/path/to/your/output_folder" \
+  --output-filename "my_comparison_plot.png" \
+  --num-bins 15
+'''
+
+'''
+python tailsteak_fairness_tail_examination.py \
+  --original-graph "/Users/eceerdem/Desktop/salsa-baselines-and-rewiring/salsa/datasets/all_datasets/reed98/socfb-Reed98.edgelist" \
+  --pprgo-predictions "/Users/eceerdem/Desktop/ICWSM_submission/aaai_results_doc/realistic_synthetic_exp/tailsteak_fairness_examination/pprgo_predicted_network_top10.npy" \
+  --tailsteak-predictions "/Users/eceerdem/Desktop/ICWSM_submission/aaai_results_doc/realistic_synthetic_exp/tailsteak_fairness_examination/tailsteak_top_10_predicted_edges_seed_7.txt" \
+  --output-dir "/Users/eceerdem/Desktop/salsa-baselines-and-rewiring/plots_generation" \
+  --output-filename "degree_mixing_results.pdf" \
+  --num-bins 15
+'''

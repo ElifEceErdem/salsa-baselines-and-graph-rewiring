@@ -1,7 +1,7 @@
 # File paths (set these before running)
-train_graph_path: "/Users/eceerdem/Desktop/gae_synthetic_network_generation/gae_synthetic_graph_generator/ws_saved_graphs/ws1/train_graph.pkl"
-train_undi_graph_path: "/Users/eceerdem/Desktop/gae_synthetic_network_generation/gae_synthetic_graph_generator/ws_saved_graphs/ws1/train_undi_graph.np_csr.pkl"
-test_edges_path: "/Users/eceerdem/Desktop/gae_synthetic_network_generation/gae_synthetic_graph_generator/ws_saved_graphs/ws1/eval-recall/recall_test_pos_edgelist.pkl"
+train_graph_path: "" 
+train_undi_graph_path: ""
+test_edges_path: ""
 
 # Dataset name (choose from: twitter, wiki, reed98, ...)
 data: "pokec"
@@ -24,4 +24,4 @@ walk_length: 30          # Length of each random walk
 seed: 7
 
 # Output paths
-output_path: "/Users/eceerdem/Desktop/gae_synthetic_network_generation/salsa/outputs"  
+output_path: "./outputs"  

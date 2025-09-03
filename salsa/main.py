@@ -17,7 +17,7 @@ from utils.helpers import get_np_csr_graph, ppr_for_batch_nodes, calculate_gini
 from utils.evaluator import Evaluator
 from models.salsa import RandomWalkSimilarity
 from models.random_rec import random_recommendation
-from salsa.models.local_structural_sim import LocalStructuralSimilarity
+from models.local_structural_sim import LocalStructuralSimilarity
 
 
 def main(args):

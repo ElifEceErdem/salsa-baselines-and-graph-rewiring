@@ -7,3 +7,26 @@ salsa/outputs/**
 # experimental scripts
 /gnn_based_improved.py
 /real_dataset_improved.py
+
+# plot files
+
+plots_generation/random_seed_results.csv
+plots_generation/salsa_seed_results.csv
+plots_generation/ssnet_seed_results.csv
+plots_generation/tailsteak_seed_results.csv
+
+plots_generation/fairness_precision_comparison.pdf
+plots_generation/degree_mixing_results.pdf
+plots_generation/gnn_clustering_analysis.pdf
+plots_generation/gnn_density_delta_analysis.pdf
+plots_generation/edge_swap_clustering_analysis.pdf
+plots_generation/edge_swap_density_delta_analysis.pdf
+plots_generation/WS_PL_fairness_experiments.pdf
+plots_generation/WS_PL_precision_experiments.pdf
+
+plots_generation/salsa_all_results.csv
+plots_generation/ssnet_all_results.csv
+plots_generation/tailsteak_all_results.csv
+plots_generation/networks_info.csv
+
+
