@@ -116,26 +116,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-# USAGE EXAMPLE:
-
-'''
-python create_comparison_plot.py \
-  --salsa-csv "/path/to/your/salsa_seed_results.csv" \
-  --ssnet-csv "/path/to/your/ssnet_seed_results.csv" \
-  --tailsteak-csv "/path/to/your/tailsteak_seed_results.csv" \
-  --cn-csv "/path/to/your/common_neighbor_seed_results.csv" \
-  --random-csv "/path/to/your/random_seed_results.csv" \
-  --output-dir "/path/to/your/output_folder"
-'''
-
-
-'''
-python precision_fairness_tradeoff.py \
-  --salsa-csv "salsa_seed_results.csv" \
-  --ssnet-csv "ssnet_seed_results.csv" \
-  --tailsteak-csv "tailsteak_seed_results.csv" \
-  --cn-csv "/Users/eceerdem/Desktop/ICWSM_submission/aaai_results_doc/fig1/common_neighbor_seed_results.csv" \
-  --random-csv "random_seed_results.csv" \
-  --output-dir "/Users/eceerdem/Desktop/salsa-baselines-and-rewiring/plots_generation"
-'''

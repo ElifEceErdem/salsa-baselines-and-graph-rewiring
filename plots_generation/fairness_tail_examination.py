@@ -169,25 +169,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-# USAGE EXAMPLE:
-
-'''
-python tailsteak_fairness_tail_examination.py \
-  --original-graph "/path/to/your/socfb-Reed98.edgelist" \
-  --pprgo-predictions "/path/to/your/pprgo_predicted_network_top10.npy" \
-  --tailsteak-predictions "/path/to/your/tailsteak_top_10_predicted_edges_seed_7.txt" \
-  --output-dir "/path/to/your/output_folder" \
-  --output-filename "my_comparison_plot.png" \
-  --num-bins 15
-'''
-
-'''
-python tailsteak_fairness_tail_examination.py \
-  --original-graph "/Users/eceerdem/Desktop/salsa-baselines-and-rewiring/salsa/datasets/all_datasets/reed98/socfb-Reed98.edgelist" \
-  --pprgo-predictions "/Users/eceerdem/Desktop/ICWSM_submission/aaai_results_doc/realistic_synthetic_exp/tailsteak_fairness_examination/pprgo_predicted_network_top10.npy" \
-  --tailsteak-predictions "/Users/eceerdem/Desktop/ICWSM_submission/aaai_results_doc/realistic_synthetic_exp/tailsteak_fairness_examination/tailsteak_top_10_predicted_edges_seed_7.txt" \
-  --output-dir "/Users/eceerdem/Desktop/salsa-baselines-and-rewiring/plots_generation" \
-  --output-filename "degree_mixing_results.pdf" \
-  --num-bins 15
-'''
