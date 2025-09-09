@@ -14,6 +14,7 @@ plots_generation/random_seed_results.csv
 plots_generation/salsa_seed_results.csv
 plots_generation/ssnet_seed_results.csv
 plots_generation/tailsteak_seed_results.csv
+plots_generation/common_neighbor_seed_results.csv
 
 plots_generation/fairness_precision_comparison.pdf
 plots_generation/degree_mixing_results.pdf
@@ -23,10 +24,34 @@ plots_generation/edge_swap_clustering_analysis.pdf
 plots_generation/edge_swap_density_delta_analysis.pdf
 plots_generation/WS_PL_fairness_experiments.pdf
 plots_generation/WS_PL_precision_experiments.pdf
+plots_generation/delta_fairness_precision_comparison.pdf
+plots_generation/edge_swap_clustering_analysis_deltaFairness.pdf
+plots_generation/edge_swap_density_delta_analysis_deltaFairness.pdf
+plots_generation/fairness_precision_comparison_v1.pdf
+plots_generation/gnn_density_delta_analysis_deltaFairness.pdf
+plots_generation/gnn_clustering_analysis_deltaFairness.pdf
+plots_generation/emperical_delta_fairness.py
+plots_generation/precision_fairness_tradeoff_delta.py
+plots_generation/synthetic_net_comparison_delta.py
+WS_PL_fairness_experiments_deltaFairness.pdf
+WS_PL_precision_experiments_deltaFairness.pdf
+
 
 plots_generation/salsa_all_results.csv
+plots_generation/salsa_all_results copy.csv
 plots_generation/ssnet_all_results.csv
+plots_generation/ssnet_all_results copy.csv
 plots_generation/tailsteak_all_results.csv
+plots_generation/tailsteak_all_results copy.csv
 plots_generation/networks_info.csv
+
+plots_generation/__pycache__
+
+# environment
+environment.yml.bak
+
+.DS_Store
+.gitignore
+
 
 
