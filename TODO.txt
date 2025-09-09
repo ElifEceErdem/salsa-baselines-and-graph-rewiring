@@ -1,3 +1,0 @@
-- arrange plot_generation file
-- arrange readme
-- delete TODO.txt 

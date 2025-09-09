@@ -40,45 +40,28 @@
 │  ├─ edge_swap.py
 │  └─ gnn_based.py
 ├─ plots_generation/
+│  ├─ fairness_tail_examination.py
 │  ├─ precision_fairness_tradeoff.py
-│  ├─ synthetic_net_edge_swap_results.py
-│  ├─ synthetic_net_ws_pl_results.py
-│  ├─ synthetic_nets_gnn_results.py
-│  ├─ tailsteak_fairness_tail_examination.py
-│  ├─ random_seed_results.csv
-│  ├─ salsa_seed_results.csv
-│  ├─ ssnet_seed_results.csv
-│  ├─ tailsteak_seed_results.csv
-│  ├─ salsa_results_realistic_synthetic.csv
-│  ├─ ssnet_results_realistic_synthetic.csv
-│  ├─ salsa_ws_pl_edge_swap_results.csv
-│  ├─ ssnet_ws_pl_edge_swap_results.csv
-│  └─ (other *_results.csv used by the plotting scripts)
+│  ├─ synthetic_net_comparison.py
 ├─ salsa/
 │  ├─ datasets/
+│  │  ├─ all_datasets/
 │  │  ├─ data_prep/
-│  │  ├─ pl_graphs/
-│  │  ├─ pokec/
-│  │  ├─ reed98/
-│  │  ├─ rewired_edge_swap_reed98/
-│  │  ├─ rewired_edge_swap_wiki/
-│  │  ├─ rewired_gnn_graphs/
-│  │  ├─ twitter/
-│  │  ├─ wiki/
-│  │  └─ ws_graphs/
 │  ├─ models/
 │  │  ├─ local_structural_sim.py
 │  │  ├─ random_rec.py
 │  │  └─ salsa.py
 │  ├─ outputs/
-│  └─ utils/
-│     ├─ evaluator.py
-│     └─ helpers.py
-├─ gnn_based_improved.py        # experimental improved variant of gnn_based
-├─ config.yaml
-├─ main.py
-├─ reed98_exp.sh
-└─ rewired_gnn_synthetic_exp.sh
+│  ├─ utils/
+│  │  ├─ evaluator.py
+│  │  └─helpers.py
+│  ├─ config.yaml
+│  ├─ main.py
+│  ├─ reed98_exp.sh
+│  └─ rewired_gnn_synthetic_exp.sh
+├─ environment.yml
+└─ README.md
+
 ```
 
 ---
@@ -202,29 +185,59 @@ Implementation details as in the paper: GCN hidden dim 32, Adam lr 0.01; key kno
 3. **Run recommenders**
    Execute `main.py` or the provided shell scripts (e.g., `./reed98_exp.sh`, `./rewired_gnn_synthetic_exp.sh`). SALSA is implemented here; other GNN baselines use their official codebases.
 4. **Collect results into CSVs**
-   The plotting scripts expect aggregated CSVs named like the ones in `plots_generation/` (e.g., `salsa_seed_results.csv`, `ssnet_seed_results.csv`, `tailsteak_seed_results.csv`, plus synthetic variants such as `*_ws_pl_edge_swap_results.csv` and `*_results_realistic_synthetic.csv`). Keep the same column names used in the paper: `dataset`, `model`/`Model`, `p10`, `1-gini` (or `fairness`), `Global clustering`, etc.
+   The plotting scripts expect aggregated CSVs named like the ones in `plots_generation/` (e.g., `salsa_seed_results.csv`, `ssnet_seed_results.csv`, `tailsteak_seed_results.csv`, plus synthetic variants such as `ws_pl_all_results.csv` and `edge_swap_all_results.csv.csv`). Keep the same column names used in the paper: `dataset`, `model`/`Model`, `p10`, `1-gini` (or `fairness`), `Global clustering`, etc.
 5. **Generate figures**
    From the repo root:
-
+   **Pareto front (precision vs fairness) across models**
    ```bash
-   # Pareto front (precision vs fairness) across models
-   python plots_generation/precision_fairness_tradeoff.py
-
-   # Synthetic: results for degree‑preserving edge‑swap rewiring
-   python plots_generation/synthetic_net_edge_swap_results.py
-
-   # Synthetic: results for WS/PL families
-   python plots_generation/synthetic_net_ws_pl_results.py
-
-   # Synthetic: results for GNN‑based rewiring
-   python plots_generation/synthetic_nets_gnn_results.py
-
-   # Tail‑STEAK fairness tail examination (long‑tail analysis)
-   python plots_generation/tailsteak_fairness_tail_examination.py
+      python plot_generation/precision_fairness_tradeoff.py \
+      --salsa-csv "/path/to/salsa_seed_results.csv" \
+      --ssnet-csv "/path/to/ssnet_seed_results.csv" \
+      --tailsteak-csv "/path/to/tailsteak_seed_results.csv" \
+      --cn-csv "/path/to/common_neighbor_seed_results.csv" \
+      --random-csv "/path/to/random_seed_results.csv" \
+      --output-dir "/path/to/output_folder"
    ```
 
-   By default, scripts read the CSVs placed in `plots_generation/` and write figures to `plots_generation/figures/` (create the folder if it doesn’t exist). If you prefer custom paths, pass the script’s `--in`/`--out` arguments when available.
+   **Synthetic: results for WS/PL families**
+   ```bash
+      python plot_generation/synthetic_net_comparison.py ws_pl \
+      --salsa-csv "/path/to/salsa_all_results.csv" \
+      --ssnet-csv "/path/to/ssnet_all_results.csv" \
+      --tailsteak-csv "/path/to/tailsteak_all_results.csv" \
+      --props-csv "/path/to/networks_info.csv" \
+      --output-dir "/path/to/plots_folder"
+   ```
+   **Synthetic: results for degree‑preserving edge‑swap rewiring**
+   ```bash
+      python plot_generation/synthetic_net_comparison.py edge_swap
+      --salsa-csv "/path/to/salsa_all_results.csv" \
+      --ssnet-csv "/path/to/ssnet_all_results.csv" \
+      --tailsteak-csv "/path/to/tailsteak_all_results.csv" \
+      --props-csv "/path/to/networks_info.csv" \
+      --output-dir "/path/to/plots_folder"
+   ```
+   
+   **Synthetic: results for GNN‑based rewiring**
+   ```bash
+      python plot_generation/synthetic_net_comparison.py gnn \
+   --salsa-csv "/path/to/salsa_all_results.csv" \
+   --ssnet-csv "/path/to/ssnet_all_results.csv" \
+   --tailsteak-csv "/path/to/tailsteak_all_results.csv" \
+   --props-csv "/path/to/networks_info.csv" \
+   --output-dir "/path/to/plots_folder"
+   ```
 
+   ***Fairness tail examination (long‑tail analysis)**
+   ```bash
+      python plot_generation/tailsteak_fairness_tail_examination.py \
+      --original-graph "/path/to/socfb-Reed98.edgelist" \
+      --pprgo-predictions "/path/to/pprgo_predicted_network_top10.npy" \
+      --tailsteak-predictions "/path/to/tailsteak_top_10_predicted_edges_seed_7.txt" \
+      --output-dir "/path/to/output_folder" \
+      --output-filename "my_comparison_plot.png" \
+      --num-bins 15
+   ```
 ---
 
 
