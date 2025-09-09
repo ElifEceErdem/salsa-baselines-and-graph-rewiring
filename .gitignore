@@ -51,7 +51,6 @@ plots_generation/__pycache__
 environment.yml.bak
 
 .DS_Store
-.gitignore
-
+**/.DS_Store
 
 
