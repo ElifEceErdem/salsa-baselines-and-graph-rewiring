@@ -33,7 +33,7 @@ def prepare_data_for_dataset(config, num_bins):
             raise ValueError(f"Unsupported file format for predictions: {prediction_file}")
 
     except (FileNotFoundError, ValueError) as e:
-        print(f"❌ Error processing '{dataset_name}': {e}. Skipping.")
+        print(f"Error processing '{dataset_name}': {e}. Skipping.")
         return None
     
     max_degree = max(initial_degrees.values()) if initial_degrees else 1
@@ -123,7 +123,7 @@ def main():
         return
 
     global_vmax = max(data['matrix'].max() for data in plot_data_list if data['matrix'].size > 0)
-    print(f"\n✅ Global color scale determined. Max value (vmax) = {global_vmax:.3f}")
+    print(f"\nGlobal color scale determined. Max value (vmax) = {global_vmax:.3f}")
 
     # =========================================================================
     # STEP 4: Create the plot with updated titles and shared axes
@@ -165,7 +165,7 @@ def main():
     full_output_path = os.path.join(args.output_dir, args.output_filename)
     plt.savefig(full_output_path, dpi=300, bbox_inches='tight')
     plt.close(fig)
-    print(f"\n✅ Plot successfully saved as '{full_output_path}'")
+    print(f"\nPlot successfully saved as '{full_output_path}'")
 
 if __name__ == '__main__':
     main()

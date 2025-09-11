@@ -51,7 +51,7 @@ def safe_edge_split(G, val_size=25000, test_size=50000):
     train_edges, val_edges, test_edges = [], [], []
 
     degree = dict(G.degree())
-    # For each node, track how many edges would be left in train if we move this edge to val/test
+    
     train_degree = degree.copy()
 
     total_val, total_test = 0, 0
@@ -82,7 +82,7 @@ def safe_edge_split(G, val_size=25000, test_size=50000):
 def save_edge_list(edges, filename):
     with open(filename, "w") as f:
         for u, v in edges:
-            f.write(f"{u}\t{v}\t1\n")  # Add dummy weight '1' for compatibility
+            f.write(f"{u}\t{v}\t1\n")  
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Stratified edge split for edgelist graph.")

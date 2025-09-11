@@ -531,7 +531,7 @@ def plot_graph(G: nx.Graph, title: str = "Graph", node_size: int = 20,
     if save_path:
         os.makedirs(os.path.dirname(save_path), exist_ok=True)
         plt.savefig(save_path, dpi=300)
-        print(f"✅ Saved: {save_path}")
+        print(f"Saved: {save_path}")
 
 
 if __name__ == "__main__":

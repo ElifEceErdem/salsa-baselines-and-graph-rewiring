@@ -36,9 +36,3 @@ def random_recommendation(test_edges, adj_csr, k, seed=42):
         predictions[u] = recs
 
     return predictions
-
-# Example usage (adapt as needed for integration):
-# test_edges = np.array([[0, 2], [1, 3], ...])
-# adj_csr = {0: [1, 2], 1: [0, 3], ...}
-# k = 10
-# preds = random_recommendation(test_edges, adj_csr, k)

@@ -271,7 +271,7 @@ if __name__ == "__main__":
         if value is not None:
             config[key] = value
 
-    # Optionally, convert back to an object
+    
     args = SimpleNamespace(**config)
 
     main(args)

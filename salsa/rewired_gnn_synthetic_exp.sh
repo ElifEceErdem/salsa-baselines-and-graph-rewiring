@@ -14,7 +14,7 @@ for net_id in {1..8}; do
 
     # Check if the directory exists before proceeding
     if [ ! -d "$network_dir" ]; then
-        echo "⚠️  Warning: Directory not found, skipping: $network_dir"
+        echo "Warning: Directory not found, skipping: $network_dir"
         continue
     fi
 

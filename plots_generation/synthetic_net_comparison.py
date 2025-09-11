@@ -96,7 +96,7 @@ def to_float_safe(val):
 #         data['ws_properties'] = ws_netdf
 #         data['pl_properties'] = pl_netdf
 
-#     print("✅ Data loading complete.")
+#     print("Data loading complete.")
 #     return data
 
 
@@ -156,7 +156,7 @@ def load_all_data(args):
         # For 'gnn' and 'edge_swap', use the properties df directly
         data['properties'] = properties
 
-    print("✅ Data loading complete.")
+    print("Data loading complete.")
     return data
 
 
@@ -250,7 +250,7 @@ def run_gnn_analysis(data, output_dir):
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
     plt.savefig(os.path.join(output_dir, "gnn_clustering_analysis.pdf"))
     plt.close()
-    print("✅ GNN clustering plot saved.")
+    print("GNN clustering plot saved.")
 
     # --- PART 2: Density Analysis (Matched Pairs) ---
     pairs_density = [
@@ -323,7 +323,7 @@ def run_gnn_analysis(data, output_dir):
     plt.savefig(os.path.join(output_dir, "gnn_density_delta_analysis.pdf"), bbox_inches="tight")
     plt.close()
 
-    print("✅ GNN density plot saved.")
+    print("GNN density plot saved.")
 
 def run_edge_swap_analysis(data, output_dir):
     """Performs the analysis and generates plots for edge-swapped networks."""
@@ -418,7 +418,7 @@ def run_edge_swap_analysis(data, output_dir):
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
     plt.savefig(os.path.join(output_dir, "edge_swap_clustering_analysis.pdf"))
     plt.close()
-    print("✅ Edge-swap clustering plot saved.")
+    print("Edge-swap clustering plot saved.")
 
     # --- PART 2: DENSITY ANALYSIS ---
     print("\n--- Starting Part 2: Density Analysis (6 custom pairs) ---")
@@ -497,7 +497,7 @@ def run_edge_swap_analysis(data, output_dir):
     plt.tight_layout(rect=[0, 0, 1, 0.96])
     plt.savefig(os.path.join(output_dir, "edge_swap_density_delta_analysis.pdf"), bbox_inches="tight")
     plt.close()
-    print("✅ Edge-swap density plots saved.")
+    print("Edge-swap density plots saved.")
 
 def run_ws_pl_analysis(data, output_dir):
     """Performs the analysis and generates plots for WS and PL networks."""
@@ -614,7 +614,7 @@ def run_ws_pl_analysis(data, output_dir):
     plt.savefig(os.path.join(output_dir, "WS_PL_fairness_experiments.pdf"), format="pdf")
     plt.close(fig2)
 
-    print("✅ WS & PL plots saved.")
+    print("WS & PL plots saved.")
 
 # ==============================================================================
 # --- 4. MAIN CONTROLLER ---
@@ -666,7 +666,7 @@ def main():
     elif args.analysis_type == 'ws_pl':
         run_ws_pl_analysis(data, args.output_dir)
         
-    print("\n✅ Analysis complete.")
+    print("\nAnalysis complete.")
 
 if __name__ == '__main__':
     main()

@@ -59,11 +59,11 @@ def load_and_process_data(args):
             rand[["dataset", "seed", "Model", "fairness", "p10"]]
         ], ignore_index=True)
         
-        print("✅ Data processing complete.")
+        print("Data processing complete.")
         return df
 
     except FileNotFoundError as e:
-        print(f"❌ Error: File not found - {e}. Please check your input paths.")
+        print(f"Error: File not found - {e}. Please check your input paths.")
         return pd.DataFrame() # Return an empty DataFrame on error
 
 def create_plot(df, output_dir, output_filename):
@@ -100,7 +100,7 @@ def create_plot(df, output_dir, output_filename):
     os.makedirs(output_dir, exist_ok=True)
     output_path = os.path.join(output_dir, output_filename)
     plt.savefig(output_path, dpi=300)
-    print(f"✅ Plot successfully saved to: {output_path}")
+    print(f"Plot successfully saved to: {output_path}")
 
 def main():
     """The main entry point of the script."""

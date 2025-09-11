@@ -14,4 +14,4 @@ for d in "$BASE_DIR"/ws*; do
     fi
 done
 
-echo "✅ All folders processed."
+echo "All folders processed."

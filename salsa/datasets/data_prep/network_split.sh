@@ -29,4 +29,4 @@ find "$BASE_DIR" -type f -name "*.edgelist" | while read -r edgelist_file; do
 done
 
 echo "---"
-echo "✅ All splits completed."
+echo "All splits completed."

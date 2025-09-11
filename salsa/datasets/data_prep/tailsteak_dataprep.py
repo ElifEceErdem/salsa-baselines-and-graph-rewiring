@@ -78,7 +78,7 @@ def sample_negatives(u, v, k):
 with open(OUTPUT_JSON, 'w') as out:
     # Start JSON object
     out.write('{"base_graph":[[')
-    # base_graph: list containing one list of training edges
+    
     first = True
     with open(train_tmp) as fin:
         for line in tqdm(fin, desc='Writing base_graph'):
@@ -113,7 +113,7 @@ with open(OUTPUT_JSON, 'w') as out:
                 out.write(',')
             out.write(json.dumps(entry))
             first = False
-    # Close JSON object
+    
     out.write(']}')
 
 print(f"Saved graph_data-format JSON to {OUTPUT_JSON}")

@@ -2,7 +2,7 @@
 
 # --- Check for Command-Line Argument ---
 if [ "$#" -ne 1 ]; then
-    echo "❌ Error: Invalid number of arguments."
+    echo "Error: Invalid number of arguments."
     echo "Usage: $0 /path/to/dataset_directory"
     exit 1
 fi
@@ -33,4 +33,4 @@ for model in "${MODELS[@]}"; do
   done
 done
 
-echo "✅ All tasks completed."
+echo "All tasks completed."
