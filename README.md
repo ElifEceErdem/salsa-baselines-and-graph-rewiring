@@ -20,7 +20,7 @@
 
 ## What’s here
 
-* **Baselines**: Random recommender, Common Neighbors/Local Structural Similarity, and **SALSA** (our re‑implementation). Hooks provided to run LightGCN, PPRGo, SSNet, and Tail‑STEAK as used in the paper.
+* **Baselines**: This repo includes simple recommenders like Random, Common Neighbors, and SALSA. It also includes helper code to easily run more advanced models from the paper, such as LightGCN, PPRGo, [SSNet](https://github.com/CGCL-codes/ssnet/tree/master), and [Tail‑STEAK](https://github.com/antman9914/Tail-STEAK/tree/main)
 * **Graph rewiring**:
 
   * `edge_rewiring/edge_swap.py` — triangle‑focused **degree‑preserving** swaps to systematically **decrease clustering**.
@@ -60,6 +60,7 @@
 │  ├─ reed98_exp.sh
 │  └─ rewired_gnn_synthetic_exp.sh
 ├─ environment.yml
+└─ LICENSE
 └─ README.md
 
 ```
@@ -100,7 +101,7 @@ Example (first 4 lines):
 
 ## Data availability & download
 
-The full datasets are large (≈29 GB compressed), so we host them externally.
+The full datasets are large, so we host them externally.
 
 - **Google Drive**: [All Processed Datasets](https://drive.google.com/drive/folders/1i-FVCXLoVCtrCz6j_JQP7WOg6jXOUjol?usp=sharing)
 
