@@ -563,13 +563,13 @@ if __name__ == "__main__":
     set_seed(args.seed)
 
     if args.dense:
-        dense_graph_path = "/var/scratch/eerdem/a_gnn_network_gen/base_datasets/socfb-Reed98_dense/socfb-Reed98.mtx"
+        dense_graph_path = "socfb-Reed98_dense/socfb-Reed98.mtx"
         print(f"Loading dense graph from: {dense_graph_path}")
         G = load_graph_from_mtx(dense_graph_path)
         print(f"Dense graph loaded: {G.number_of_nodes()} nodes, {G.number_of_edges()} edges")
 
     elif args.sparse:
-        sparse_graph_path = "/var/scratch/eerdem/a_gnn_network_gen/base_datasets/soc-wiki-Vote_sparse/soc-wiki-Vote.mtx"
+        sparse_graph_path = "soc-wiki-Vote_sparse/soc-wiki-Vote.mtx"
         print(f"Loading sparse graph from: {sparse_graph_path}")
         G = load_graph_from_mtx(sparse_graph_path)
         print(f"Sparse graph loaded: {G.number_of_nodes()} nodes, {G.number_of_edges()} edges")
