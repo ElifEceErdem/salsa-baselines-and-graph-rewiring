@@ -22,10 +22,10 @@
 
 * **Baselines**: This repo includes simple recommenders like Random, Common Neighbors, and SALSA. It also includes helper code to easily run more advanced models from the paper, such as LightGCN, PPRGo, [SSNet](https://github.com/CGCL-codes/ssnet/tree/master), and [Tail‑STEAK](https://github.com/antman9914/Tail-STEAK/tree/main)
 * **Graph rewiring**:
-
   * `edge_rewiring/edge_swap.py` — triangle‑focused **degree‑preserving** swaps to systematically **decrease clustering**.
-  * `edge_rewiring/gnn_based.py` — a **GNN‑driven** scoring + constrained projection to **target clustering** while preserving **density** and **degree distribution** (via Wasserstein/degree caps) and encouraging connectivity (MST backbone).
-* **Datasets**: empirical (Twitter‑9K, Pokec, Wiki, Reed98), fully synthetic (Watts–Strogatz, Power‑law/cluster), and semi‑synthetic (edge‑swap and GNN‑rewired variants).
+  * `edge_rewiring/gnn_based.py` — a **GNN‑driven** scoring + constrained projection to **target clustering** while preserving **density** and **degree distribution** (via Wasserstein/degree caps).
+  * `edge_rewiring/gnn_based_improved.py` — **(New)** An improved hybrid approach. Uses **SGC encoding** for structural scoring, **Weighted Havel-Hakimi** (or Min-Cost Flow) to enforce the **exact degree sequence**, and **Simulated Annealing** to precisely tune **clustering**.
+  * `edge_rewiring/batch_graph_generation.py` — Automation script to generate large batches of rewired graphs across varying clustering targets.
 * **Evaluation**: unified metrics (P\@10, 1−Gini), CSV outputs, plotting hooks.
 
 > **Notes**: All graphs are treated as **undirected** with **zero‑indexed node IDs**. We average over multiple seeds (10 on empirical; 2 on synthetic) as in the paper.
@@ -37,8 +37,10 @@
 ```
 .
 ├─ edge_rewiring/
-│  ├─ edge_swap.py
-│  └─ gnn_based.py
+│  ├─ batch_graph_generation.py
+|  ├─ edge_swap.py
+|  ├─ gnn_based.py
+│  └─ gnn_based_improved.py
 ├─ plots_generation/
 │  ├─ fairness_tail_examination.py
 │  ├─ precision_fairness_tradeoff.py
@@ -177,6 +179,35 @@ Implementation details as in the paper: GCN hidden dim 32, Adam lr 0.01; key kno
 
 ---
 
+### Improved Degree-Preserving Generator (SGC + Annealing)
+
+A hybrid method that combines representation learning with combinatorial optimization to **target global clustering** while maintaining the **exact degree sequence** and **connectivity** of the base graph.
+
+**Pipeline:**
+1. **Encoder**: Computes structural node embeddings using **Simple Graph Convolution (SGC)** (with optional $A^2$ terms for triangle awareness).
+2. **Scoring**: Ranks potential edges using Centered Cosine Similarity or SGC-Tri scoring.
+3. **Projection**: Uses **Weighted Havel-Hakimi** (fallback to Min-Cost Flow) to select edges that strictly match the original degree sequence.
+4. **Annealing**: Refines the graph using **degree-preserving edge swaps** to reach the exact target clustering coefficient.
+
+**Example**:
+
+```bash
+python edge_rewiring/gnn_based_improved.py \
+  --sparse \
+  --target_clustering 0.1 \
+  --anneal_steps 100000 \
+  --T0 1.5 \
+  --Tf 0.005 \
+  --seed 7
+```
+
+To generate comprehensive datasets (e.g., sweeping clustering from 0.0 to 0.6) for experiments, use the batch script. This automates the improved generator across multiple seeds and targets.
+
+```bash
+python edge_rewiring/batch_graph_generation.py
+```
+  
+  
 ## Reproducing paper results
 
 1. **Prepare graphs**
