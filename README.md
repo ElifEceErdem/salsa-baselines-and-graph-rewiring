@@ -105,7 +105,7 @@ Example (first 4 lines):
 
 The full datasets are large, so we host them externally.
 
-- **Google Drive**: [All Processed Datasets](https://drive.google.com/drive/folders/1i-FVCXLoVCtrCz6j_JQP7WOg6jXOUjol?usp=sharing)
+- **Google Drive**: [All Processed Datasets]()
 
 
 ## Run baseline recommender
