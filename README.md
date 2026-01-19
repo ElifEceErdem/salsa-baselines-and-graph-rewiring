@@ -1,6 +1,6 @@
-# A Structural Dilemma: The Trade‑off Between Precision and Fairness in Link Recommendations — Code & Data
+# When can Social Network Recommendations Improve Precision and Mitigate Inequality? — Code & Data
 
-> Reproducible code for the paper **“A Structural Dilemma: The Trade‑off Between Precision and Fairness in Link Recommendations”**. This repo provides: (i) graph rewiring to control structure (triangle‑focused edge‑swap and a GNN‑based), (ii) baselines for link recommendation (Random, Common Neighbors/Local Structural Similarity, SALSA, plus data preperation for LightGCN, PPRGo, SSNet, Tail‑STEAK), and (iii) an evaluation pipeline reporting Precision\@10, 1−Gini (degree fairness).
+> Reproducible code for the paper **“When can Social Network Recommendations Improve Precision and Mitigate Inequality?”**. This repo provides: (i) graph rewiring to control structure (triangle‑focused edge‑swap and a GNN‑based), (ii) baselines for link recommendation (Random, Common Neighbors/Local Structural Similarity, SALSA, plus data preperation for LightGCN, PPRGo, SSNet, Tail‑STEAK), and (iii) an evaluation pipeline reporting Precision\@10, degree fairness.
 
 ---
 
