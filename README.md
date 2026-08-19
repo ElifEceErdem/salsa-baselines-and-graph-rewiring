@@ -135,50 +135,6 @@ Results (CSV) are written under `salsa/outputs/...`.
 
 ## Rewiring methods
 
-### Edge‑swap (degree‑preserving)
-
-Fast swaps that preserve the degree sequence and typically **decrease** clustering. Useful for generating lower‑clustering controls.
-
-**Example**:
-
-```bash
-python edge_rewiring/edge_swap.py \
-  --input salsa/datasets/wiki/graph.edgelist \
-  --output salsa/datasets/rewired_edge_swap_wiki/wiki_swap.edgelist \
-  --num_swaps 200000 \
-  --avoid_self_loops True \
-  --avoid_multi_edges True
-```
-
-### GNN‑based optimizer (target clustering)
-
-Learns edge scores via a GNN (2‑layer GCN + dot‑product decoder) and **projects** to an adjacency under hard constraints:
-
-* preserve **density** (±ε)
-* preserve **degree distribution** (Wasserstein + degree caps; KL monitoring)
-* **target global clustering** (projection enforces an upper bound)
-* encourage **connectivity** via an MST backbone
-
-**Example**:
-
-```bash
-python edge_rewiring/gnn_based.py \
-  --wass_weight 40 \
-  --alpha 0.3 \
-  --temperature 0.05 \
-  --early_stop \
-  --mst_keep_ratio 1 \
-  --sparse \
-  --num_layers 2 \
-  --target_clustering 0.05 \
-  --output salsa/datasets/rewired_gnn_graphs/wiki_gnn_rewired.edgelist
-  --seed 7"
-```
-
-Implementation details as in the paper: GCN hidden dim 32, Adam lr 0.01; key knobs alpha ∈ {0.05,0.1,0.3}, MST ratio ∈ {0.25,0.5,0.75,1}.
-
----
-
 ### Improved Degree-Preserving Generator (SGC + Annealing)
 
 A hybrid method that combines representation learning with combinatorial optimization to **target global clustering** while maintaining the **exact degree sequence** and **connectivity** of the base graph.
